@@ -6,21 +6,10 @@ class App extends React.Component {
   constructor(props) {
     super(props);
       this.state = {
-        chulaVistaTemp : 0,
         startDate: undefined,
         endDate: undefined,
-        chartInfo: {
-          labels: ['January', 'February', 'March','April', 'May'],
-          datasets: [{
-            label: 'Temperature(F)',
-            fill: false,
-            lineTension: 0.5,
-            backgroundColor: 'rgba(75,192,192,1)',
-            borderColor: 'rgba(0,0,0,1)',
-            borderWidth: 2,
-            data: [65, 59, 80, 81, 56]
-          }]
-        }
+        chartTemps: [],
+        dayLabels: []
       }
       this.handleTempData=this.handleTempData.bind(this);
       this.handleStartDate=this.handleStartDate.bind(this);
@@ -36,6 +25,9 @@ class App extends React.Component {
   }
 
   handleTempData() {
+    let responseTemperatures = [];
+    let chartTemperatures = [];
+    let tempDays = [];
     axios({
       headers: {
         token: 'qqInFZLMhjXIfwxasnxecYhBpuyFTTcY'
@@ -43,13 +35,21 @@ class App extends React.Component {
       method: 'get',
       responseType: 'json',
       url: `https://www.ncdc.noaa.gov/cdo-web/api/v2/data?datasetid=GHCND&datatypeid=TOBS&locationid=ZIP:91911&startdate=${this.state.startDate}&enddate=${this.state.endDate}&units=standard`
-    }).then((response) => {
-      this.setState({chulaVistaTemp: response.data.results});
-      console.log('data results',response.data.results)
+    }).then((response) => {      
+      responseTemperatures = response.data.results;
+      for(let i=0;i<responseTemperatures.length;i++){
+        chartTemperatures.push(responseTemperatures[i].value);
+      }
+      for(let i=0;i<responseTemperatures.length;i++){
+        let editedDate = new Date(responseTemperatures[i].date).toString();
+        let dateWithoutTime = editedDate.split(' ').slice(0, 4).join(' ');
+        tempDays.push(dateWithoutTime);
+      }
+      this.setState({chartTemps: chartTemperatures});
+      this.setState({dayLabels: tempDays});
     }).catch((err) => {
       console.log('ApiData function',err);
     })
-
   }
 
   render() {
@@ -68,7 +68,18 @@ class App extends React.Component {
           Click Me
         </button>
         <Line
-          data={this.state.chartInfo}
+          data={{
+            labels: this.state.dayLabels,
+            datasets: [{
+              label: 'Temperature(F)',
+              fill: false,
+              lineTension: 0.5,
+              backgroundColor: 'rgba(75,192,192,1)',
+              borderColor: 'rgba(0,0,0,1)',
+              borderWidth: 2,
+              data: this.state.chartTemps
+            }]
+          }}
           options={{
             title:{
               display:true,
