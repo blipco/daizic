@@ -8,6 +8,9 @@ to render the data in a Line Chart.  If you have any questions about this projec
 
 In the project directory, you can run:
 
+#### `npm install`
+Installs all dependencies locally that are required for the application.
+
 #### `npm start`
 
 Runs the app in your browser.<br />
