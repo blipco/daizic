@@ -55,43 +55,45 @@ class App extends React.Component {
   render() {
     return (
       <div>
-        <h2>
+        <div id='container'>
+        <h2 id='title'>
         Temperatures for Chula Vista, CA
         </h2>
         <form id='tempForm'>
-          Start Date
-          <input onChange={this.handleStartDate} value={this.state.startDate} placeholder='YYYY-MM-DD'/><br/>
-          End Date
-          <input onChange={this.handleEndDate} value={this.state.endDate} placeholder='YYYY-MM-DD'/><br/>
+          <label className='formChildren' htmlFor='startDate'>Start Date:</label>
+          <input title='Please enter a date in the format YYYY-MM-DD' className='formChildren' id='startDate' onChange={this.handleStartDate} value={this.state.startDate} placeholder='YYYY-MM-DD'/>
+          <label className='formChildren' htmlFor='endDate'>End Date:</label>
+          <input title='Please enter a date in the format YYYY-MM-DD' className='formChildren' id='endDate' onChange={this.handleEndDate} value={this.state.endDate} placeholder='YYYY-MM-DD'/>
+          <input className='formChildren' type='button' onClick={this.handleTempData} value='SUBMIT'/>
         </form>
-        <button onClick={this.handleTempData}>
-          Click Me
-        </button>
-        <Line
-          data={{
-            labels: this.state.dayLabels,
-            datasets: [{
-              label: 'Temperature(F)',
-              fill: false,
-              lineTension: 0.5,
-              backgroundColor: 'rgba(75,192,192,1)',
-              borderColor: 'rgba(0,0,0,1)',
-              borderWidth: 2,
-              data: this.state.chartTemps
-            }]
-          }}
-          options={{
-            title:{
-              display:true,
-              text:'Daily Temperature for Chula Vista, CA',
-              fontSize:20
-            },
-            legend:{
-              display:true,
-              position:'right'
-            }
-          }}
-        />
+        <div id='chartContainer'>
+          <Line
+            data={{
+              labels: this.state.dayLabels,
+              datasets: [{
+                label: 'Temperature(F)',
+                fill: true,
+                lineTension: 0.5,
+                backgroundColor: 'rgba(75,192,192,1)',
+                borderColor: 'rgba(0,0,0,1)',
+                borderWidth: 2,
+                data: this.state.chartTemps
+              }]
+            }}
+            options={{
+              title:{
+                display:true,
+                fontSize: 20,
+                color: 'rgba(255, 242, 0, 0.5)'
+              },
+              legend:{
+                display:true,
+                position:'right'
+              }
+            }}
+          />
+        </div>
+        </div>
       </div>
     );
   }
