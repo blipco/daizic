@@ -34,7 +34,7 @@ class App extends React.Component {
       },
       method: 'get',
       responseType: 'json',
-      url: `https://www.ncdc.noaa.gov/cdo-web/api/v2/data?datasetid=GHCND&datatypeid=TOBS&locationid=ZIP:91911&startdate=${this.state.startDate}&enddate=${this.state.endDate}&units=standard`
+      url: `https://www.ncdc.noaa.gov/cdo-web/api/v2/data?datasetid=GHCND&datatypeid=TOBS&locationid=ZIP:91911&startdate=${this.state.startDate}&enddate=${this.state.endDate}&units=standard&limit=31`
     }).then((response) => {      
       responseTemperatures = response.data.results;
       for(let i=0;i<responseTemperatures.length;i++){
